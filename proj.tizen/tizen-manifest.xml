@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="2.3" package="test.rocketsocial.match3" version="1.0.0">
+    <ui-application appid="test.rocketsocial.match3" exec="hellocpp" multiple="false" nodisplay="false" taskmanage="true" type="capp">
+        <label>Match3</label>
+        <icon>Match3.png</icon>
+    </ui-application>
+</manifest>
