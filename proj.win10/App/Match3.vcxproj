@@ -219,6 +219,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Classes\AppDelegate.h" />
+    <ClInclude Include="..\..\Classes\GameScene.h" />
+    <ClInclude Include="..\..\Classes\Gem.h" />
+    <ClInclude Include="..\..\Classes\Grid.h" />
     <ClInclude Include="..\..\Classes\HelloWorldScene.h" />
     <ClInclude Include="App.xaml.h">
       <DependentUpon>App.xaml</DependentUpon>
@@ -243,6 +246,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\..\Classes\GameScene.cpp" />
+    <ClCompile Include="..\..\Classes\Gem.cpp" />
+    <ClCompile Include="..\..\Classes\Grid.cpp" />
     <ClCompile Include="..\..\Classes\HelloWorldScene.cpp" />
     <ClCompile Include="App.xaml.cpp">
       <DependentUpon>App.xaml</DependentUpon>
