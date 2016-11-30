@@ -15,10 +15,10 @@ static const std::vector<cocos2d::Color4F> colors = { cocos2d::Color4F::BLACK, \
 
 
 
-Gem * Gem::create(int type)
+Gem * Gem::create(int type, int width)
 {
 	Gem * ret = new (std::nothrow) Gem();
-	if (ret && ret->init(type))
+	if (ret && ret->init(type, width))
 	{
 		ret->autorelease();
 	}
@@ -29,7 +29,7 @@ Gem * Gem::create(int type)
 	return ret;
 }
 
-bool Gem::init(int type)
+bool Gem::init(int type, int width)
 {
 	if (!Node::init())
 	{
@@ -37,12 +37,13 @@ bool Gem::init(int type)
 	}
 
 	m_type = type;
+	m_width = width;
 	
 	CCLOG("anchor:%.2f, %.2f", getAnchorPoint().x, getAnchorPoint().y);
-	this->setContentSize(Size(8, 8));
+	this->setContentSize(Size(m_width, m_width));
 	this->setAnchorPoint(Vec2(0.5, 0.5));
 	m_drawNode = DrawNode::create();
-	m_drawNode->drawSolidRect(Vec2(0, 0), Vec2(8, 8), colors[m_type]);
+	m_drawNode->drawSolidRect(Vec2(0, 0), Vec2(m_width, m_width), colors[m_type]);
 	addChild(m_drawNode);
 	
 

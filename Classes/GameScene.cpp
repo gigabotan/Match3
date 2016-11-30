@@ -2,6 +2,8 @@
 
 USING_NS_CC;
 
+const cocos2d::Vec2 GameScene::m_offset(50, 100);
+
 cocos2d::Scene * GameScene::createSceneWithRowsColors(int rows, int cols, int colors)
 {
 	// 'scene' is an autorelease object
@@ -51,49 +53,8 @@ bool GameScene::init(int rows, int cols, int colors)
 	
 
 
-	auto button = ui::Button::create("btn-play-normal.png", "btn-play-selected.png");
-
-	button->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			Director::getInstance()->popScene();
-			break;
-		default:
-			break;
-		}
-	});
-
-	button->setPosition(Vec2(visibleSize.width + origin.x - button->getContentSize().width / 2, visibleSize.height + origin.y - button->getContentSize().height /2));
-
-	addChild(button);
-
-	auto button2 = ui::Button::create("btn-play-normal.png", "btn-play-selected.png");
-
-	button2->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			lookForMatches();
-			break;
-		default:
-			break;
-		}
-	});
-
-	button2->setPosition(Vec2(visibleSize.width + origin.x - button->getContentSize().width *3/ 2, visibleSize.height + origin.y - button->getContentSize().height *3 / 2));
-
-	addChild(button2);
-
-
 	setTouchEnabled(true);
 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
-
-
 
 
 	m_grid = std::vector<Vector<Gem*>>(m_cols, Vector<Gem*>(m_rows));
@@ -148,28 +109,61 @@ void GameScene::fillGrid()
 
 void GameScene::addRandomGem(int col)
 {
-	auto gem = Gem::create(RandomHelper::random_int(0, m_colors));
+	auto gem = Gem::create(RandomHelper::random_int(0, m_colors), m_stride/2);
 	m_grid[col].pushBack(gem);
 	int row = m_grid[col].size() - 1;
+	updateGemPosition(gem, col, row);
+	addChild(gem);
+}
+
+void GameScene::updateGemPosition(Gem* gem, int col, int row)
+{
 	gem->setPosition(Vec2(m_offset.x + col * m_stride, m_offset.y + row * m_stride));
 	gem->setCol(col);
 	gem->setRow(row);
-	addChild(gem);
+}
+
+void GameScene::removeMatchesAndUpdate()
+{
+	while (lookForMatches())
+	{
+		removeMatches();
+		updateColumns();
+		fillGrid();
+	}
+
+	if (lookForPossibleMoves())
+	{
+		m_readyForTouch = true;
+	}
+	else
+	{
+		onGameEnd();
+	}
+
 }
 
 void GameScene::removeMatches()
 {
 	for (auto it = m_matched.rbegin();  it != m_matched.rend(); ++it) 
 	{
+		auto col = (*it)->getCol();
+		auto row = (*it)->getRow();
+		m_grid[col].erase(row);
+		m_cellsToUpdate[col] = row;
 		(*it)->removeFromParent();
-
-
-
 	}
 }
 
 void GameScene::updateColumns()
 {
+	for (const auto& it : m_cellsToUpdate)
+	{
+		for (int i = it.second; i < m_grid[it.first].size(); ++i)
+		{
+			updateGemPosition(m_grid[it.first].at(i), it.first, i);
+		}
+	}
 }
 
 bool GameScene::lookForMatches()
@@ -331,12 +325,21 @@ void GameScene::onSwapEnd(Gem* first, Gem* second)
 		m_userMoved = false;
 		if (!lookForMatches()) {
 			swapGems(second, first);
+			m_readyForTouch = true;
+		}
+		else
+		{
+			removeMatchesAndUpdate();
 		}
 	}
 }
 
 void GameScene::onGemTouch(Gem * gem)
 {
+	if (gem == nullptr)
+	{
+		return;
+	}
 	if (m_first == nullptr) 
 	{
 		m_first = gem;
@@ -352,12 +355,14 @@ void GameScene::onGemTouch(Gem * gem)
 		m_first->setScale(1);
 		if ((m_first->getRow() == gem->getRow()) && (abs(m_first->getCol() - gem->getCol()) == 1)) 
 		{
+			m_readyForTouch = false;
 			makeSwap(m_first, gem);
 			m_first = nullptr;
  
 		}
 		else if ((m_first->getCol() == gem->getCol()) && (abs(m_first->getRow() - gem->getRow()) == 1)) 
 		{
+			m_readyForTouch = false;
 			makeSwap(m_first, gem);
 			m_first = nullptr;
   
@@ -372,7 +377,12 @@ void GameScene::onGemTouch(Gem * gem)
 
 bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 {
-	return true;
+	if (m_readyForTouch)
+	{
+
+		return true;
+		
+	}
 }
 
 void GameScene::onTouchEnded(Touch * touch, Event * unused_event)
@@ -391,5 +401,20 @@ void GameScene::onTouchEnded(Touch * touch, Event * unused_event)
 	}
 }
 
+void GameScene::onGameEnd()
+{
+// 	MenuItemFont::setFontSize(18);
+// 	auto item = MenuItemFont::create("Click to start new game", CC_CALLBACK_1(GameScene::newGameCallback, this));
+// 	auto menu = Menu::create(item, nullptr);
+// 	this->addChild(menu);
+// 	menu->setPosition(Vec2());
+	newGameCallback();
+}
 
-const cocos2d::Vec2 GameScene::m_offset(100, 200);
+void GameScene::newGameCallback()
+{
+	Director::getInstance()->popScene();
+}
+
+
+

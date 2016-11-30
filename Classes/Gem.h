@@ -8,9 +8,9 @@ class GameScene;
 class Gem : public cocos2d::Node
 {
 public:
-	static Gem* create(int type);
+	static Gem* create(int type, int width);
 
-	bool init(int type);
+	bool init(int type, int width);
 	int getType();
 	void changeType(int type);
 	int getRow() const;
@@ -21,14 +21,19 @@ public:
 
 private:
 	cocos2d::DrawNode* m_drawNode = nullptr;
+	int m_width;
 	int m_type;
 	int m_row;
 	int m_col;
 };
 
+
+// comparator for matched elements set with right order
 struct GemComp
 {
 	bool operator()(const Gem* lhs, const Gem* rhs) const;
 };
+
+
 
 #endif // Gem_h__

@@ -63,7 +63,7 @@ bool HelloWorld::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			Director::getInstance()->pushScene(GameScene::createSceneWithRowsColors(8, 8, 6));
+			Director::getInstance()->pushScene(GameScene::createSceneWithRowsColors(8, 8, 7));
 			break;
 		default:
 			break;
