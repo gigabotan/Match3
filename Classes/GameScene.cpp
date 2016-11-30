@@ -395,6 +395,7 @@ void GameScene::onTouchEnded(Touch * touch, Event * unused_event)
 			if (gem->getBoundingBox().containsPoint(location))
 			{
 				onGemTouch(gem);
+				return;
 			}
 		}
 
