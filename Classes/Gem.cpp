@@ -4,15 +4,6 @@
 
 USING_NS_CC;
 
-static const std::vector<cocos2d::Color4F> colors = { cocos2d::Color4F::BLACK, \
-														cocos2d::Color4F::RED, \
-														cocos2d::Color4F::GREEN, \
-														cocos2d::Color4F::BLUE, \
-														cocos2d::Color4F::YELLOW, \
-														cocos2d::Color4F::MAGENTA, \
-														cocos2d::Color4F::ORANGE, \
-														cocos2d::Color4F::GRAY };
-
 
 
 Gem * Gem::create(int type, int width)
@@ -36,14 +27,14 @@ bool Gem::init(int type, int width)
 		return false;
 	}
 
+    
 	m_type = type;
 	m_width = width;
 	
-	CCLOG("anchor:%.2f, %.2f", getAnchorPoint().x, getAnchorPoint().y);
 	this->setContentSize(Size(m_width, m_width));
 	this->setAnchorPoint(Vec2(0.5, 0.5));
 	m_drawNode = DrawNode::create();
-	m_drawNode->drawSolidRect(Vec2(0, 0), Vec2(m_width, m_width), colors[m_type]);
+	m_drawNode->drawSolidRect(Vec2(0, 0), Vec2(m_width, m_width), m_colors[m_type]);
 	addChild(m_drawNode);
 	
 
@@ -59,7 +50,7 @@ void Gem::changeType(int type)
 {
 	m_drawNode->clear();
 	m_type = type;
-	m_drawNode->drawSolidRect(Vec2(-4, -4), Vec2(4, 4), colors[m_type]);
+	m_drawNode->drawSolidRect(Vec2(-4, -4), Vec2(4, 4), m_colors[m_type]);
 }
 
 int Gem::getRow() const
