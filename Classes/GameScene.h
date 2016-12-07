@@ -50,7 +50,7 @@ public:
 	virtual void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event);
 
 	void onGameEnd();
-	void newGameCallback();
+	void newGameCallback(Ref* pSender);
 
 
 

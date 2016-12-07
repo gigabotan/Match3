@@ -16,6 +16,10 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
+
+private:
+	int _rows = 8;
+	int _colors = 7;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
