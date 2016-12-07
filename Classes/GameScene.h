@@ -10,15 +10,6 @@
 
 class GameScene : public cocos2d::Layer
 {
-protected:
-	enum State {
-		WAIT_ACTION,
-		ACTION_PERFORMED,
-		SWAPPING,
-		SWAPPED,
-		FALLING,
-		GAME_END
-	} m_state;
 public:
 
     static cocos2d::Scene* createSceneWithRowsColors(int rows, int cols, int colors);
@@ -50,7 +41,7 @@ public:
 	virtual void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event);
 
 	void onGameEnd();
-	void newGameCallback();
+	void newGameCallback(Ref* pSender);
 
 
 

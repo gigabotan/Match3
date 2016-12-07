@@ -20,14 +20,7 @@ public:
 
 
 private:
-    const std::vector<cocos2d::Color4F> m_colors{ cocos2d::Color4F::BLACK,
-        cocos2d::Color4F::RED,
-        cocos2d::Color4F::GREEN,
-        cocos2d::Color4F::BLUE,
-        cocos2d::Color4F::YELLOW,
-        cocos2d::Color4F::MAGENTA,
-        cocos2d::Color4F::ORANGE,
-        cocos2d::Color4F::GRAY };
+	static const std::vector<cocos2d::Color4F> m_colors;
     
 	cocos2d::DrawNode* m_drawNode = nullptr;
 	int m_width;

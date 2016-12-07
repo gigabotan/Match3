@@ -75,6 +75,17 @@ void Gem::setCol(int col)
 
 
 
+const std::vector<cocos2d::Color4F> Gem::m_colors = { { 0,0,0,1 },
+{ 1,0,0,1 },
+{ 0,1,0,1 },
+{ 0,0,1,1 },
+{ 1,1,0,1 },
+{ 1,0,1,1 },
+{ 1,0.5f,0,1 },
+{ 0.65f,0.65f,0.65f,1 } };
+
+
+
 bool GemComp::operator()(const Gem * lhs, const Gem * rhs) const
 {
 	if (lhs->getRow() < rhs->getRow())
