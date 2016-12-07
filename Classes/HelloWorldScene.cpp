@@ -54,7 +54,6 @@ bool HelloWorld::init()
     menuClose->setPosition(Vec2::ZERO);
     this->addChild(menuClose, 1);
 
-	
 
 	auto button = ui::Button::create("btn-play-normal.png", "btn-play-selected.png");
 
@@ -64,7 +63,7 @@ bool HelloWorld::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			Director::getInstance()->pushScene(GameScene::createSceneWithRowsColors(_rows, _rows, _colors));
+			Director::getInstance()->pushScene(GameScene::createSceneWithRowsColors(8, 8, 7));
 			break;
 		default:
 			break;

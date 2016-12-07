@@ -50,10 +50,11 @@ bool GameScene::init(int rows, int cols, int colors)
 
 	auto background = LayerColor::create(Color4B(22, 99, 96, 255));
 	addChild(background, -1);
+	
 
 
- 	setTouchEnabled(true);
- 	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
+	setTouchEnabled(true);
+	setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
 
 
 	m_grid = std::vector<Vector<Gem*>>(m_cols, Vector<Gem*>(m_rows));
@@ -65,16 +66,16 @@ bool GameScene::init(int rows, int cols, int colors)
 	{
 		clearGrid();
 		fillGrid();
-		if (lookForMatches())
+		if(lookForMatches())
 		{
-			continue;
+			continue; 
 		}
-		if (!lookForPossibleMoves())
-		{
-			continue;
+
+		if(!lookForPossibleMoves()) 
+		{ 
+			continue; 
 		}
 		break;
-
 	}
 	
 	
@@ -324,15 +325,12 @@ void GameScene::onSwapEnd(Gem* first, Gem* second)
 		m_userMoved = false;
 		if (!lookForMatches()) {
 			swapGems(second, first);
+			m_readyForTouch = true;
 		}
 		else
 		{
 			removeMatchesAndUpdate();
 		}
-	}
-	else 
-	{
-		m_readyForTouch = true;
 	}
 }
 
@@ -385,7 +383,6 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 		return true;
 		
 	}
-	return false;
 }
 
 void GameScene::onTouchEnded(Touch * touch, Event * unused_event)
@@ -407,17 +404,15 @@ void GameScene::onTouchEnded(Touch * touch, Event * unused_event)
 
 void GameScene::onGameEnd()
 {
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	MenuItemFont::setFontSize(18);
-	auto item = MenuItemFont::create("Click to start new game", CC_CALLBACK_1(GameScene::newGameCallback, this));
-	auto menu = Menu::create(item, nullptr);
-	menu->setPosition(Vec2(visibleSize.width - item->getContentSize().width / 2 - 10, visibleSize.height - item->getContentSize().height / 2 - 10));
-	addChild(menu, 1);
-	
-	
+// 	MenuItemFont::setFontSize(18);
+// 	auto item = MenuItemFont::create("Click to start new game", CC_CALLBACK_1(GameScene::newGameCallback, this));
+// 	auto menu = Menu::create(item, nullptr);
+// 	this->addChild(menu);
+// 	menu->setPosition(Vec2());
+	newGameCallback();
 }
 
-void GameScene::newGameCallback(Ref* pSender)
+void GameScene::newGameCallback()
 {
 	Director::getInstance()->popScene();
 }
